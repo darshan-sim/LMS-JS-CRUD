@@ -1,11 +1,22 @@
 import createModal from "./createModal.js";
-
-console.log("Hello")
+import populateProducts from "./populateProducts.js";
+import product from "./product.js";
+import { createButton } from "./utils.js";
 
 window.addEventListener("DOMContentLoaded", () => {
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.addEventListener('click', () => createModal.showCreateModel())
-    button.innerText = "Click"
-    root.append(button)
-})
+	const button = createButton(
+		"button",
+		"Create Product",
+		["btn", "create"],
+		createModal.showCreateModel
+	);
+	const products = product.getAllProducts();
+	const productsListElement = populateProducts.listAll(products);
+	const productContainer = document.createElement("div");
+	productContainer.setAttribute("data-table", "product");
+	if (productsListElement) {
+		productContainer.append(productsListElement);
+	}
+	root.append(productContainer);
+	root.append(button);
+});
