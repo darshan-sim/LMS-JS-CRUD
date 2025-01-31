@@ -1,22 +1,52 @@
-import createModal from "./createModal.js";
-import populateProducts from "./populateProducts.js";
-import product from "./product.js";
-import { createButton } from "./utils.js";
+import router from "./router.js";
+
+const getParams = (search) => {
+	const params = {};
+	const URLParams = new URLSearchParams(search.split("?")[1]);
+	for (const [key, value] of URLParams.entries()) {
+		params[key] = value;
+	}
+	return params;
+};
+
+const navigate = (path, element) => {
+	let content = null;
+	if (path == "index") {
+		const search = window.location.search;
+		const params = getParams(search);
+		content = router[path](params);
+		element.replaceChildren(content);
+		return;
+	}
+	const pageName = path.split("?")[0].slice(1);
+	const params = getParams(path);
+	content = router[pageName](params);
+	element.replaceChildren(content);
+};
 
 window.addEventListener("DOMContentLoaded", () => {
-	const button = createButton(
-		"button",
-		"Create Product",
-		["btn", "create"],
-		createModal.showCreateModel
-	);
-	const products = product.getAllProducts();
-	const productsListElement = populateProducts.listAll(products);
-	const productContainer = document.createElement("div");
-	productContainer.setAttribute("data-table", "product");
-	if (productsListElement) {
-		productContainer.append(productsListElement);
+	const hash = window.location.hash;
+	if (hash) {
+		navigate(hash, root);
+	} else {
+		navigate("index", root);
 	}
-	root.append(productContainer);
-	root.append(button);
+});
+
+window.addEventListener("popstate", () => {
+	const hash = window.location.hash;
+	if (hash) {
+		navigate(hash, root);
+	} else {
+		navigate("index", root);
+	}
+});
+
+window.addEventListener("pushstate", () => {
+	const hash = window.location.hash;
+	if (hash) {
+		navigate(hash, root);
+	} else {
+		navigate("index", root);
+	}
 });

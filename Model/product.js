@@ -1,4 +1,4 @@
-import populateProducts from "./populateProducts.js";
+import table from "../Components/table.js";
 
 const product = (() => {
 	let products = JSON.parse(localStorage.getItem("products")) || [];
@@ -27,12 +27,15 @@ const product = (() => {
 
 	const pushProduct = (product) => {
 		products.push({ ...product, id: n++ });
-		const productContainer = document.querySelector("[data-table='product']");
-
-		const productsListElement = populateProducts.listAll(returnAllProducts());
-		productContainer.replaceChildren(productsListElement);
-		storeAllToLocalStorage();
-		updateId();
+		const productContainer = document.querySelector(
+			"[data-table-container='product']"
+		);
+		if (productContainer) {
+			const productsListElement = table(returnAllProducts());
+			productContainer.replaceChildren(productsListElement);
+			storeAllToLocalStorage();
+			updateId();
+		}
 	};
 
 	const storeAllToLocalStorage = () => {
@@ -47,6 +50,10 @@ const product = (() => {
 
 	const returnAllProducts = () => products;
 
+	const returnProduct = (id) => {
+		return { ...products.find((product) => product.id == id) };
+	};
+
 	return {
 		createEmptyProduct: () => {
 			return { ...product };
@@ -54,7 +61,8 @@ const product = (() => {
 		populateProduct: populateObject,
 		addProduct: pushProduct,
 		getAllProducts: returnAllProducts,
-		deleteProduct: handleDelete
+		deleteProduct: handleDelete,
+		getProduct: returnProduct
 	};
 })();
 
