@@ -1,7 +1,11 @@
 import table from "../Components/table.js";
 
 const product = (() => {
-	let products = JSON.parse(localStorage.getItem("products")) || [];
+	let products = [];
+
+	try {
+		products = JSON.parse(localStorage.getItem("products"));
+	} catch (e) {}
 
 	let n = localStorage.getItem("id") || 100;
 
@@ -10,7 +14,7 @@ const product = (() => {
 		name: "",
 		description: "",
 		price: "",
-		images: ""
+		images: []
 	};
 
 	const populateObject = (values) => {
@@ -56,7 +60,7 @@ const product = (() => {
 
 	return {
 		createEmptyProduct: () => {
-			return { ...product };
+			return { ...product, images: [] };
 		},
 		populateProduct: populateObject,
 		addProduct: pushProduct,

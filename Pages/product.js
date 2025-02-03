@@ -32,7 +32,6 @@ const getProducts = (params) => {
 	);
 	div.append(buttonEl);
 	div.append(productContainer);
-
 	return div;
 };
 

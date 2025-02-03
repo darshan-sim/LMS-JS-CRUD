@@ -1,5 +1,6 @@
 import input from "./input.js";
 import label from "./label.js";
+import { renderImages } from "./renderImages.js";
 
 export default (name, value, isInput, inputInfo, files) => {
 	const div = document.createElement("div");
@@ -32,7 +33,11 @@ export default (name, value, isInput, inputInfo, files) => {
 	const valueEle = document.createElement("div");
 	valueEle.classList.add("product-info");
 	nameEle.textContent = name;
-	valueEle.textContent = value;
+	if (name === "images") {
+		renderImages(value, valueEle, false);
+	} else {
+		valueEle.textContent = value;
+	}
 
 	div.append(nameEle);
 	div.append(valueEle);

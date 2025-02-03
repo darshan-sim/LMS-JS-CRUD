@@ -6,9 +6,10 @@ import { redirectBack, showErrors } from "../Utils/utils.js";
 
 const createModal = (function () {
 	let form = null;
-	const handleInput = (e) => {};
+	let errors = {};
+	let files = {};
 
-	const handleSubmit = (e, errors, object, update) => {
+	const handleSubmit = (e, errors, object, isNewProduct) => {
 		e.preventDefault();
 		if (!form) {
 			form.parentElement.removeChild(form);
@@ -21,20 +22,30 @@ const createModal = (function () {
 			}
 			return;
 		}
-
 		for (const key in object) {
 			if (key === "id") continue;
+			console.log({ [key]: typeof object[key] });
+			if (typeof object[key] == "object") {
+				object[key] = files[key];
+				console.log({ [key]: files[key] });
+				continue;
+			}
 			object[key] = form[key].value;
 		}
 
-		if (!update) {
+		if (isNewProduct) {
 			product.addProduct(object);
+			errors = {};
+			files = {};
 			form.parentElement.removeChild(form);
-			console.log({ update: !update });
+			console.log({ isNewProduct: isNewProduct });
 		} else {
+			console.log("update");
 			redirectBack();
 		}
 	};
+
+	const handleInput = () => {};
 
 	const checkErrors = (errors) => {
 		return Object.values(errors).filter(Boolean).length > 0;
@@ -47,15 +58,21 @@ const createModal = (function () {
 		}
 	};
 
+	function checkIsEmpty(object) {
+		return Object.values(object).find((value) => value.length > 0)
+			? false
+			: true;
+	}
+
 	const showModel = (myProduct) => {
-		const isEmpty = Object.values(myProduct).filter(Boolean).length > 0;
+		const isEmpty = checkIsEmpty(myProduct);
+		console.log(myProduct);
+		console.log(isEmpty);
 		form = document.createElement("form");
 		form.setAttribute("data-model", "product");
 		form.method = "post";
 		form.enctype = "multipart/form-data";
 		form.classList.add("form", "form-modal");
-		let errors = {};
-		let files = {};
 
 		Object.keys(myProduct).map((key) => {
 			const inputRules = inputConfig[key];
@@ -74,9 +91,8 @@ const createModal = (function () {
 				myProduct[key],
 				true,
 				inputObject,
-				(files[key] = [])
+				(files[key] = myProduct[key])
 			);
-
 			form.append(field);
 			return field;
 		});
@@ -84,7 +100,7 @@ const createModal = (function () {
 		const div = document.createElement("div");
 		div.classList.add("action-buttons");
 
-		const submit = button("submit", `${isEmpty ? "Update" : "Create"}`, [
+		const submit = button("submit", `${isEmpty ? "Create" : "Update"}`, [
 			"btn",
 			"btn-submit"
 		]);
