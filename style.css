@@ -1,121 +1,121 @@
 :root {
-    --rounded: 3px;
-    --shadow: 0 4px 4px -1px rgb(0 0 0 / 0.3);
-    --shadow-hover: 0 6px 10px -1px rgb(0 0 0 / 0.6);
-    --dark-text: #292524;
-    --light-text: #f5f5f4;
+  --rounded: 3px;
+  --shadow: 0 4px 4px -1px rgb(0 0 0 / 0.3);
+  --shadow-hover: 0 6px 10px -1px rgb(0 0 0 / 0.6);
+  --dark-text: #292524;
+  --light-text: #f5f5f4;
 }
 
 body {
-    font-size: 1.1rem;
-    font-family: sans-serif;
+  font-size: 1.1rem;
+  font-family: sans-serif;
 }
 
 button {
-    border: none;
-    background: none;
+  border: none;
+  background: none;
 }
 
 input {
-    border: none;
+  border: none;
 }
 
 .form {
-    border-radius: 10px;
-    box-shadow: var(--shadow-hover);
-    padding: 2rem;
-    display: grid;
-    gap: 1rem;
-    font-size: 1.2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-hover);
+  padding: 2rem;
+  display: grid;
+  gap: 1rem;
+  font-size: 1.2rem;
 }
 
 .form-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
 }
 
 .field {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    align-items: center;
-    gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .action-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .error-indicator {
-    border: 1px solid red;
-    border-radius: var(--rounded);
+  border: 1px solid red;
+  border-radius: var(--rounded);
 }
 
 [data-error] {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .error-indicator::after {
-    content: attr(data-before);
-    position: absolute;
-    left: 0.3rem;
-    transform: translateY(-50%);
-    color: red;
-    background: white;
-    padding-inline: .3rem;
-    font-size: 0.8rem;
-    font-weight: 600;
+  content: attr(data-before);
+  position: absolute;
+  top: 0;
+  left: 0.3rem;
+  transform: translateY(-50%);
+  color: red;
+  background: white;
+  padding-inline: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .product-info {
-    border: 1px solid var(--light-text);
-    border-radius: var(--rounded);
-    width: 100%;
-    box-sizing: border-box;
-    padding: .5rem;
-    font-size: 1rem;
+  border: 1px solid var(--light-text);
+  border-radius: var(--rounded);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 .error-message {
-    color: red;
-    font-size: 0.9rem;
+  color: red;
+  font-size: 0.9rem;
 }
 
 .btn {
-    padding: 0.3rem 0.9rem;
-    background-color: #55c2da;
-    color: var(--dark-text);
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: var(--rounded);
-    cursor: pointer;
+  padding: 0.3rem 0.9rem;
+  background-color: #55c2da;
+  color: var(--dark-text);
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--rounded);
+  cursor: pointer;
 }
 
-.btn-submit{
-    background-color: #00bc7d;
-    color: var(--light-text);
+.btn-submit {
+  background-color: #00bc7d;
+  color: var(--light-text);
 }
 
-.product{
-    /* border: 1px solid red; */
+.product {
+  /* border: 1px solid red; */
 }
 
-.center-div{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.center-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-
-.null-data{
-    color: gray;
-    font-size: 1rem;
-    text-align: center;
+.null-data {
+  color: gray;
+  font-size: 1rem;
+  text-align: center;
 }
