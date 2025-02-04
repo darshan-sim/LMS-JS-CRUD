@@ -52,7 +52,48 @@ const product = (() => {
 		return products;
 	};
 
-	const returnAllProducts = () => products;
+	const handleUpdate = (id, newValues) => {
+		const oldProduct = products.find((product) => product.id === id);
+		if (!oldProduct || oldProduct == null) {
+			return false;
+		}
+		for (let key in oldProduct) {
+			if (oldProduct[key] != null) {
+				oldProduct[key] = newValues[key];
+			}
+		}
+		return true;
+	};
+
+	const handleOrder = (a, b, key, direction) => {
+		console.log({ a });
+		console.log({ b });
+		console.log({ key });
+		console.log({ direction });
+	};
+
+	const returnAllProducts = (params) => {
+		console.log(params);
+		let filteredProduct = [...products];
+		for (let key in params) {
+			if (key === "images") continue;
+			if (key === "orderBy") continue;
+			if (key === "direction") continue;
+			filteredProduct = filteredProduct.filter((product) => {
+				if (product[key] === undefined) return false;
+				return (
+					product[key].toString().toLowerCase().indexOf(params[key]) !== -1
+				);
+			});
+		}
+		if (params?.orderBy) {
+			filteredProduct = filteredProduct.sort();
+		}
+		if (params?.direction === "desc") {
+			filteredProduct = filteredProduct.reverse();
+		}
+		return filteredProduct;
+	};
 
 	const returnProduct = (id) => {
 		return { ...products.find((product) => product.id == id) };
@@ -66,7 +107,8 @@ const product = (() => {
 		addProduct: pushProduct,
 		getAllProducts: returnAllProducts,
 		deleteProduct: handleDelete,
-		getProduct: returnProduct
+		getProduct: returnProduct,
+		updateProduct: handleUpdate
 	};
 })();
 

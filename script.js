@@ -11,7 +11,7 @@ const getParams = (search) => {
 
 const navigate = (path, element) => {
 	let content = null;
-	if (path == "index") {
+	if (path === "index") {
 		const search = window.location.search;
 		const params = getParams(search);
 		content = router[path](params);

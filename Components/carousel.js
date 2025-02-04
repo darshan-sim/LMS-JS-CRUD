@@ -1,5 +1,4 @@
 const displayImg = (image, element, animation) => {
-	// console.log(image);
 	const imgPreview = document.createElement("img");
 	if (animation) {
 		imgPreview.classList.add(animation);
@@ -7,10 +6,6 @@ const displayImg = (image, element, animation) => {
 	imgPreview.src = image;
 	element.innerHTML = "";
 	element.append(imgPreview);
-};
-
-const removeIndicator = (parent, child) => {
-	parent.removeChild(child);
 };
 
 const previousIndicator = (parent, callback) => {
@@ -29,11 +24,6 @@ const nextIndicator = (parent, callback) => {
 	next.addEventListener("click", callback);
 	parent.append(next);
 	return next;
-};
-
-const displayPosition = (length, index) => {
-	const positions = document.createElement("div");
-	for (let i = 0; i <= length; i++) {}
 };
 
 export default (images, classes) => {

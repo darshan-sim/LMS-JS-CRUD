@@ -26,7 +26,10 @@ export default (productData) => {
 			const modal = document.querySelector("[data-model='product']");
 			modal.parentElement.removeChild(modal);
 		}
-		const modal = createModal.showModel(productData);
+		const modal = createModal.showModel({
+			...productData,
+			images: [...productData.images]
+		});
 		if (modal) {
 			root.append(modal);
 		}
@@ -54,18 +57,21 @@ export default (productData) => {
 	}
 
 	const td = document.createElement("td");
+	const div = document.createElement("div");
+	td.classList.add("action-buttons");
 
 	const showButton = button("button", "Show", ["btn", "btn-show"], handleShow);
-	const editButton = button("button", "Edit", ["btn", "btn-edit"], handleEdit);
+	const editButton = button("button", "Edit", ["btn", "btn-green"], handleEdit);
 	const deleteButton = button(
 		"button",
 		"Delete",
 		["btn", "btn-delete"],
 		handleDelete
 	);
-	td.append(showButton);
-	td.append(editButton);
-	td.append(deleteButton);
+	div.append(showButton);
+	div.append(editButton);
+	div.append(deleteButton);
+	td.append(div);
 	tr.append(td);
 	return tr;
 };

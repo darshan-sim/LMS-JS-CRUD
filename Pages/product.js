@@ -1,9 +1,8 @@
 import button from "../Components/button.js";
-import dataField from "../Components/dataField.js";
+import input from "../Components/input.js";
 import createModal from "../Components/modal.js";
 import table from "../Components/table.js";
 import product from "../Model/product.js";
-import { redirectBack } from "../Utils/utils.js";
 
 const getProducts = (params) => {
 	const displayModal = () => {
@@ -16,9 +15,68 @@ const getProducts = (params) => {
 		}
 	};
 
-	const products = product.getAllProducts();
-	const productTable = table(products);
+	const handleSearch = () => {
+		const value = search.value;
+		console.log(value);
+		const url = new URL(window.location);
+		const params = new URLSearchParams(url.search);
+		params.set("name", value);
+		url.search = params.toString();
+		history.pushState(null, "", url.toString());
+		const paramsObject = {};
+		params.forEach((value, key) => {
+			paramsObject[key] = value;
+		});
+		const newProducts = product.getAllProducts(paramsObject);
+		console.log(newProducts);
+		if (!newProducts || newProducts.length <= 0) {
+			if (productTable) {
+				productContainer.classList.add("hidden");
+			}
+			if (noData) {
+				noData.classList.remove("hidden");
+			}
+		} else {
+			if (noData) {
+				noData.classList.add("hidden");
+			}
+			productTable.classList.remove("hidden");
+			productContainer.appendChild(productTable);
+		}
+		console.log(productTable);
+		// else {
+		// 	productTable = table(newProducts);
+		// 	productContainer.classList.remove("hidden");
+		// 	if (noData) {
+		// 		noData.classList.add("hidden");
+		// 	}
+		// }
+	};
+
+	const callSearch = function (callback, delay) {
+		let timeout;
+		return function () {
+			let context = this,
+				args = arguments;
+
+			clearTimeout(timeout);
+			timeout = setTimeout(function () {
+				callback.apply(context, args);
+			}, delay);
+		};
+	};
+
+	let products = product.getAllProducts(params);
 	const productContainer = document.createElement("div");
+	let productTable = null;
+	let noData = document.createElement("img");
+	noData.src = "/Images/no-data-to-display.svg";
+	if (!products || products.length <= 0) {
+		productContainer.append(noData);
+	} else {
+		productTable = table(products);
+	}
+	productContainer.classList.add("table-container");
 	productContainer.setAttribute("data-table-container", "product");
 	if (productTable) {
 		productContainer.append(productTable);
@@ -27,68 +85,24 @@ const getProducts = (params) => {
 	const buttonEl = button(
 		"button",
 		"Create Product",
-		["btn", "create"],
+		["btn", "btn-create-product"],
 		displayModal
 	);
+	const search = input(
+		"text",
+		"",
+		{ placeholder: "search" },
+		callSearch(handleSearch, 300)
+	);
+	search.classList.add("search");
 	div.append(buttonEl);
+	productContainer.append(search);
 	div.append(productContainer);
 	return div;
 };
 
-const editProduct = (params) => {
-	const myProduct = product.getProduct(params.id);
-	if (myProduct == null) {
-		const notFound = document.createElement("h2");
-		notFound.textContent = "No product found!";
-		notFound.classList.add("product-not-found");
-		return notFound;
-	}
-	const productDiv = createModal.showModel(myProduct);
-	return productDiv;
+const getPage = (params) => {
+	return null;
 };
 
-const getProduct = (params) => {
-	const myProduct = product.getProduct(params.id);
-	const handleEdit = () => {
-		history.pushState(
-			null,
-			"",
-			`${window.location.origin}/index.html#edit?id=${params.id}`
-		);
-		window.dispatchEvent(new Event("pushstate"));
-	};
-	const handleDelete = () => {
-		if (confirm(`Do you Want to delete ${myProduct.name}?`)) {
-			product.deleteProduct(myProduct.id);
-			redirectBack();
-		}
-	};
-	if (myProduct == null) {
-		const notFound = document.createElement("h2");
-		notFound.textContent = "No product found!";
-		notFound.classList.add("product-not-found");
-		return notFound;
-	}
-	const productDiv = document.createElement("div");
-	productDiv.classList.add("product", "form-modal", "form");
-	for (const key in myProduct) {
-		productDiv.append(dataField(key, myProduct[key]));
-	}
-	const actionButtons = document.createElement("div");
-	actionButtons.classList.add("action-buttons");
-	const editBtn = button("button", "Edit", ["btn", "btn-edit"], handleEdit);
-	const deleteBtn = button(
-		"button",
-		"Delete",
-		["btn", "btn-delete"],
-		handleDelete
-	);
-	const backBtn = button("button", "Back", ["btn"], redirectBack);
-	actionButtons.append(editBtn);
-	actionButtons.append(deleteBtn);
-	actionButtons.append(backBtn);
-	productDiv.append(actionButtons);
-	return productDiv;
-};
-
-export { getProducts, getProduct, editProduct };
+export { getProducts, getPage };
