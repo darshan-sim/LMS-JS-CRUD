@@ -26,7 +26,7 @@ export default (productData) => {
 			const modal = document.querySelector("[data-model='product']");
 			modal.parentElement.removeChild(modal);
 		}
-		const modal = createModal.showModel({
+		const modal = createModal.showModal({
 			...productData,
 			images: [...productData.images]
 		});

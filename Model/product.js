@@ -30,15 +30,11 @@ const product = (() => {
 	};
 
 	const pushProduct = (product) => {
-		products.push({ ...product, id: n++ });
-		const productContainer = document.querySelector(
-			"[data-table-container='product']"
-		);
-		if (productContainer) {
-			const productsListElement = table(returnAllProducts());
-			productContainer.replaceChildren(productsListElement);
-			storeAllToLocalStorage();
-			updateId();
+		try {
+			products.push({ ...product, id: n++ });
+			return true;
+		} catch (e) {
+			return false;
 		}
 	};
 
@@ -62,19 +58,13 @@ const product = (() => {
 				oldProduct[key] = newValues[key];
 			}
 		}
+		storeAllToLocalStorage();
 		return true;
 	};
 
-	const handleOrder = (a, b, key, direction) => {
-		console.log({ a });
-		console.log({ b });
-		console.log({ key });
-		console.log({ direction });
-	};
-
 	const returnAllProducts = (params) => {
-		console.log(params);
 		let filteredProduct = [...products];
+
 		for (let key in params) {
 			if (key === "images") continue;
 			if (key === "orderBy") continue;
@@ -92,6 +82,10 @@ const product = (() => {
 		if (params?.direction === "desc") {
 			filteredProduct = filteredProduct.reverse();
 		}
+		// let page = 6;
+		// let items = 3;
+		// filteredProduct = filteredProduct.slice(page * items, page * items + items);
+		console.log({ filteredProduct });
 		return filteredProduct;
 	};
 

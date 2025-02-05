@@ -32,10 +32,15 @@ const createModal = (function () {
 		}
 
 		if (isNewProduct) {
-			product.addProduct(object);
-			errors = {};
-			files = {};
-			form.parentElement.removeChild(form);
+			const status = product.addProduct(object);
+			if (status) {
+				errors = {};
+				files = {};
+				form.parentElement.removeChild(form);
+				redirectBack();
+			} else {
+				console.alert("Failed to add product");
+			}
 		} else {
 			const status = product.updateProduct(object.id, object);
 			if (!status) {
@@ -66,7 +71,7 @@ const createModal = (function () {
 			: true;
 	}
 
-	const showModel = (myProduct) => {
+	const showModal = (myProduct) => {
 		const isEmpty = checkIsEmpty(myProduct);
 		form = document.createElement("form");
 		form.setAttribute("data-model", "product");
@@ -124,7 +129,7 @@ const createModal = (function () {
 	};
 	// createForm();
 	return {
-		showModel
+		showModal
 	};
 })();
 

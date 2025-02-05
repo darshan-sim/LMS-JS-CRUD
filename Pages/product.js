@@ -9,7 +9,7 @@ const getProducts = (params) => {
 		if (document.querySelector("[data-model='product']")) {
 			return;
 		}
-		const modal = createModal.showModel(product.createEmptyProduct());
+		const modal = createModal.showModal(product.createEmptyProduct());
 		if (modal) {
 			root.append(modal);
 		}
@@ -28,29 +28,26 @@ const getProducts = (params) => {
 			paramsObject[key] = value;
 		});
 		const newProducts = product.getAllProducts(paramsObject);
-		console.log(newProducts);
+		console.log({ newProducts });
 		if (!newProducts || newProducts.length <= 0) {
 			if (productTable) {
-				productContainer.classList.add("hidden");
+				productTable.classList.add("hidden");
 			}
 			if (noData) {
 				noData.classList.remove("hidden");
 			}
 		} else {
+			if (productTable) {
+				productContainer.removeChild(productTable);
+				productTable = table(newProducts);
+				productContainer.append(productTable);
+			}
 			if (noData) {
 				noData.classList.add("hidden");
 			}
-			productTable.classList.remove("hidden");
-			productContainer.appendChild(productTable);
 		}
-		console.log(productTable);
-		// else {
-		// 	productTable = table(newProducts);
-		// 	productContainer.classList.remove("hidden");
-		// 	if (noData) {
-		// 		noData.classList.add("hidden");
-		// 	}
-		// }
+		console.log({ productTable });
+		console.log({ noData });
 	};
 
 	const callSearch = function (callback, delay) {
@@ -70,9 +67,15 @@ const getProducts = (params) => {
 	const productContainer = document.createElement("div");
 	let productTable = null;
 	let noData = document.createElement("img");
+	productContainer.append(noData);
 	noData.src = "/Images/no-data-to-display.svg";
+	noData.classList.add("hidden", "no-data");
 	if (!products || products.length <= 0) {
-		productContainer.append(noData);
+		console.log("hey");
+		noData.classList.remove("hidden");
+		if (productTable) {
+			productTable.classList.add("hidden");
+		}
 	} else {
 		productTable = table(products);
 	}
@@ -92,7 +95,7 @@ const getProducts = (params) => {
 		"text",
 		"",
 		{ placeholder: "search" },
-		callSearch(handleSearch, 300)
+		callSearch(handleSearch, 1000)
 	);
 	search.classList.add("search");
 	div.append(buttonEl);
