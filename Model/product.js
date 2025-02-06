@@ -4,7 +4,7 @@ const product = (() => {
 	let products = [];
 
 	try {
-		products = JSON.parse(localStorage.getItem("products"));
+		products = JSON.parse(localStorage.getItem("products")) || [];
 	} catch (e) {}
 
 	let n = localStorage.getItem("id") || 100;
@@ -32,11 +32,15 @@ const product = (() => {
 	const pushProduct = (product) => {
 		try {
 			products.push({ ...product, id: n++ });
+			console.log({ n });
+			updateId();
+			storeAllToLocalStorage();
 			return true;
 		} catch (e) {
 			return false;
 		}
 	};
+	console.log({ n });
 
 	const storeAllToLocalStorage = () => {
 		localStorage.setItem("products", JSON.stringify(products));
@@ -63,6 +67,9 @@ const product = (() => {
 	};
 
 	const returnAllProducts = (params) => {
+		if (!products || products.length <= 0) {
+			return [];
+		}
 		let filteredProduct = [...products];
 
 		for (let key in params) {
@@ -77,15 +84,19 @@ const product = (() => {
 			});
 		}
 		if (params?.orderBy) {
-			filteredProduct = filteredProduct.sort();
+			filteredProduct = filteredProduct.sort((a, b) => {
+				if (a[params.orderBy] < b[params.orderBy]) {
+					return -1;
+				}
+				if (a[params.orderBy] > b[params.orderBy]) {
+					return 1;
+				}
+				return 0;
+			});
 		}
 		if (params?.direction === "desc") {
 			filteredProduct = filteredProduct.reverse();
 		}
-		// let page = 6;
-		// let items = 3;
-		// filteredProduct = filteredProduct.slice(page * items, page * items + items);
-		console.log({ filteredProduct });
 		return filteredProduct;
 	};
 

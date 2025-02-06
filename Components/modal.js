@@ -33,16 +33,18 @@ const createModal = (function () {
 
 		if (isNewProduct) {
 			const status = product.addProduct(object);
+			console.log({ status });
 			if (status) {
 				errors = {};
 				files = {};
 				form.parentElement.removeChild(form);
 				redirectBack();
 			} else {
-				console.alert("Failed to add product");
+				alert("Failed to add product");
 			}
 		} else {
 			const status = product.updateProduct(object.id, object);
+			console.log({ status });
 			if (!status) {
 				alert("update Operation failed!!");
 			} else {

@@ -43,7 +43,11 @@ export default (name, value, isInput, inputInfo, files) => {
 		const nameEle = document.createElement("div");
 		const valueEle = document.createElement("div");
 		valueEle.classList.add("product-info");
-		nameEle.textContent = name;
+		if (name === "price") {
+			value = "₹ " + value;
+		}
+		nameEle.textContent = label.textContent =
+			name.slice(0, 1).toUpperCase() + name.slice(1);
 		if (name === "images") {
 			valueEle.append(carousel(value, ["big-carousel"]));
 		} else {

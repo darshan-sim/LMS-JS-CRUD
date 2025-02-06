@@ -14,13 +14,30 @@ export default (headers, classes) => {
 		history.pushState(null, "", url.toString());
 		window.dispatchEvent(new Event("pushstate"));
 	};
+
 	const thead = document.createElement("thead");
 	const tr = document.createElement("tr");
 	tr.classList.add(...classes);
+
+	const getCorrectIndicator = (header) => {
+		const url = new URL(window.location);
+		const params = new URLSearchParams(url.search);
+		const direction = params.get("direction");
+		const orderBy = params.get("orderBy");
+		if (header === orderBy && direction === "desc") {
+			return `<i class="fa-solid fa-sort-down"></i>`;
+		} else {
+			return `<i class="fa-solid fa-sort-up"></i>`;
+		}
+	};
 	headers.forEach((header) => {
 		const th = document.createElement("th");
-		th.textContent = header.toUpperCase();
-		if (header !== "images") {
+		if (header === "id" || header === "name" || header === "price") {
+			th.innerHTML = header.toUpperCase() + " " + getCorrectIndicator(header);
+		} else {
+			th.textContent = header.toUpperCase();
+		}
+		if (header !== "images" && header !== "description") {
 			th.addEventListener("click", () => handleOrder(header));
 		}
 		tr.append(th);

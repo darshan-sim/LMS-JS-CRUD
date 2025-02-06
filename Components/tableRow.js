@@ -1,4 +1,5 @@
 import product from "../Model/product.js";
+import { redirectBack } from "../Utils/utils.js";
 import button from "./button.js";
 import carousel from "./carousel.js";
 import createModal from "./modal.js";
@@ -13,11 +14,18 @@ export default (productData) => {
 				popup.parentElement.removeChild(popup);
 			}
 			const products = product.deleteProduct(productData.id);
+			console.log({ products });
+
 			const productContainer = document.querySelector(
 				"[data-table-container='product']"
 			);
-			const updatedTable = table(products);
-			productContainer.replaceChildren(updatedTable);
+			if (!products || products.length <= 0) {
+				console.log("empty");
+				redirectBack();
+			} else {
+				const updatedTable = table(products);
+				productContainer.replaceChildren(updatedTable);
+			}
 		}
 	};
 
@@ -52,6 +60,12 @@ export default (productData) => {
 		}
 		if (!data) {
 			td.classList.add("empty-data");
+		}
+		if (key === "price" || key === "id") {
+			td.style.fontWeight = 600;
+		}
+		if (key === "price") {
+			td.textContent = "₹ " + data;
 		}
 		tr.append(td);
 	}

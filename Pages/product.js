@@ -17,7 +17,6 @@ const getProducts = (params) => {
 
 	const handleSearch = () => {
 		const value = search.value;
-		console.log(value);
 		const url = new URL(window.location);
 		const params = new URLSearchParams(url.search);
 		params.set("name", value);
@@ -28,7 +27,8 @@ const getProducts = (params) => {
 			paramsObject[key] = value;
 		});
 		const newProducts = product.getAllProducts(paramsObject);
-		console.log({ newProducts });
+
+		//handle received data
 		if (!newProducts || newProducts.length <= 0) {
 			if (productTable) {
 				productTable.classList.add("hidden");
@@ -46,10 +46,7 @@ const getProducts = (params) => {
 				noData.classList.add("hidden");
 			}
 		}
-		console.log({ productTable });
-		console.log({ noData });
 	};
-
 	const callSearch = function (callback, delay) {
 		let timeout;
 		return function () {
@@ -71,12 +68,12 @@ const getProducts = (params) => {
 	noData.src = "/Images/no-data-to-display.svg";
 	noData.classList.add("hidden", "no-data");
 	if (!products || products.length <= 0) {
-		console.log("hey");
 		noData.classList.remove("hidden");
 		if (productTable) {
 			productTable.classList.add("hidden");
 		}
 	} else {
+		console.log(products);
 		productTable = table(products);
 	}
 	productContainer.classList.add("table-container");
