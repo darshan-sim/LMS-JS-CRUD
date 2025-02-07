@@ -41,6 +41,7 @@ export default (name, value, isInput, inputInfo, files) => {
 		div.append(inputDiv);
 	} else {
 		const nameEle = document.createElement("div");
+		nameEle.classList.add("field-title");
 		const valueEle = document.createElement("div");
 		valueEle.classList.add("product-info");
 		if (name === "price") {

@@ -20,7 +20,6 @@ export default (productData) => {
 				"[data-table-container='product']"
 			);
 			if (!products || products.length <= 0) {
-				console.log("empty");
 				redirectBack();
 			} else {
 				const updatedTable = table(products);
@@ -51,22 +50,26 @@ export default (productData) => {
 
 	for (const key in productData) {
 		const td = document.createElement("td");
+		const displayData = document.createElement("div");
+		displayData.classList.add("text-overflow");
+
 		const data = productData[key] || null;
 		if (key === "images") {
 			const images = productData[key];
-			td.append(carousel(images, []));
+			displayData.append(carousel(images, []));
 		} else {
-			td.textContent = data || `--No ${key}--`;
+			displayData.textContent = data || `--No ${key}--`;
 		}
 		if (!data) {
-			td.classList.add("empty-data");
+			displayData.classList.add("empty-data");
 		}
 		if (key === "price" || key === "id") {
 			td.style.fontWeight = 600;
 		}
 		if (key === "price") {
-			td.textContent = "₹ " + data;
+			displayData.textContent = "₹ " + data;
 		}
+		td.append(displayData);
 		tr.append(td);
 	}
 
