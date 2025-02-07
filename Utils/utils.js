@@ -4,6 +4,32 @@
 // 	label.setAttribute("for", name);
 // 	return label;
 // };
+import router from "../router.js";
+
+const getParams = (search) => {
+	const params = {};
+	const URLParams = new URLSearchParams(search.split("?")[1]);
+	for (const [key, value] of URLParams.entries()) {
+		params[key] = value;
+	}
+	return params;
+};
+
+const navigate = (path, element) => {
+	let content = null;
+	if (path === "index") {
+		const search = window.location.search;
+		const params = getParams(search);
+		content = router[path](params);
+		element.replaceChildren(content);
+		return;
+	}
+
+	const pageName = path.split("?")[0].slice(1);
+	const params = getParams(path);
+	content = router[pageName](params);
+	element.replaceChildren(content);
+};
 
 const showErrors = (name, error) => {
 	const errorsPlaceholder = document.querySelector(`[data-error=${name}]`);
@@ -49,10 +75,15 @@ const handleValidation = (input, validations) => {
 };
 
 const redirectBack = () => {
-	const previousUrl =
-		document.referrer || `${window.location.origin}/index.html`;
-	history.pushState(null, "", previousUrl);
-	window.dispatchEvent(new Event("pushstate"));
+	const hash = window.location.hash;
+	if (hash) {
+		navigate(hash, root);
+	} else {
+		navigate("index", root);
+	}
+	// window.location.reload();
+	// window.dispatchEvent(new Event("pushstate"));
+	// navigator();
 };
 
-export { showErrors, redirectBack, handleValidation };
+export { showErrors, redirectBack, handleValidation, navigate };

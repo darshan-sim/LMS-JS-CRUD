@@ -32,7 +32,6 @@ const product = (() => {
 	const pushProduct = (product) => {
 		try {
 			products.push({ ...product, id: n++ });
-			console.log({ n });
 			updateId();
 			storeAllToLocalStorage();
 			return true;
@@ -40,7 +39,6 @@ const product = (() => {
 			return false;
 		}
 	};
-	console.log({ n });
 
 	const storeAllToLocalStorage = () => {
 		localStorage.setItem("products", JSON.stringify(products));

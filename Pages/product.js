@@ -73,7 +73,6 @@ const getProducts = (params) => {
 			productTable.classList.add("hidden");
 		}
 	} else {
-		console.log(products);
 		productTable = table(products);
 	}
 	productContainer.classList.add("table-container");

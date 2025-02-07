@@ -33,7 +33,6 @@ const createModal = (function () {
 
 		if (isNewProduct) {
 			const status = product.addProduct(object);
-			console.log({ status });
 			if (status) {
 				errors = {};
 				files = {};
@@ -44,13 +43,12 @@ const createModal = (function () {
 			}
 		} else {
 			const status = product.updateProduct(object.id, object);
-			console.log({ status });
 			if (!status) {
 				alert("update Operation failed!!");
 			} else {
 				alert("Successful!");
 			}
-			redirectBack();
+			redirectBack(object);
 		}
 	};
 

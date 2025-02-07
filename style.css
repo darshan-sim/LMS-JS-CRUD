@@ -357,7 +357,7 @@ form .product-info{
 
 /* popup */
 .popup {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -397,7 +397,7 @@ form .product-info{
 
 .big-carousel img {
   min-width: 10rem;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 
