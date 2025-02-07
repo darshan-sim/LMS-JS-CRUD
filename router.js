@@ -1,8 +1,7 @@
-import { editProduct, getProduct, getProducts } from "./Pages/product.js";
+import { getProducts, getPage } from "./Pages/product.js";
 
 const router = {
 	index: getProducts,
-	edit: editProduct,
-	product: getProduct
+	page: getPage
 };
 export default router;

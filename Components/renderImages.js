@@ -2,7 +2,6 @@ import button from "./button.js";
 
 const renderImages = (source, element, isEdit, deleteImage) => {
 	element.innerHTML = "";
-	console.log({ element });
 	source.forEach((image, index) => {
 		const imageContainer = document.createElement("div");
 		imageContainer.classList.add("img-preview-container");

@@ -9,7 +9,7 @@ const createModal = (function () {
 	let errors = {};
 	let files = {};
 
-	const handleSubmit = (e, errors, object, isNewProduct) => {
+	const handleSubmit = (e, errors, object, isNewProduct, files) => {
 		e.preventDefault();
 		if (!form) {
 			form.parentElement.removeChild(form);
@@ -24,23 +24,32 @@ const createModal = (function () {
 		}
 		for (const key in object) {
 			if (key === "id") continue;
-			console.log({ [key]: typeof object[key] });
 			if (typeof object[key] == "object") {
 				object[key] = files[key];
-				console.log({ [key]: files[key] });
 				continue;
 			}
 			object[key] = form[key].value;
 		}
 
 		if (isNewProduct) {
-			product.addProduct(object);
-			errors = {};
-			files = {};
-			form.parentElement.removeChild(form);
-			console.log({ isNewProduct: isNewProduct });
+			const status = product.addProduct(object);
+			console.log({ status });
+			if (status) {
+				errors = {};
+				files = {};
+				form.parentElement.removeChild(form);
+				redirectBack();
+			} else {
+				alert("Failed to add product");
+			}
 		} else {
-			console.log("update");
+			const status = product.updateProduct(object.id, object);
+			console.log({ status });
+			if (!status) {
+				alert("update Operation failed!!");
+			} else {
+				alert("Successful!");
+			}
 			redirectBack();
 		}
 	};
@@ -64,10 +73,8 @@ const createModal = (function () {
 			: true;
 	}
 
-	const showModel = (myProduct) => {
+	const showModal = (myProduct) => {
 		const isEmpty = checkIsEmpty(myProduct);
-		console.log(myProduct);
-		console.log(isEmpty);
 		form = document.createElement("form");
 		form.setAttribute("data-model", "product");
 		form.method = "post";
@@ -81,9 +88,9 @@ const createModal = (function () {
 			}
 
 			const inputObject = {
-				config: inputRules,
-				callback: handleInput,
-				errors: errors
+				config: inputRules || null,
+				callback: handleInput || null,
+				errors: errors || null
 			};
 
 			const field = dataField(
@@ -117,14 +124,14 @@ const createModal = (function () {
 		div.append(submit);
 		form.append(div);
 		form.addEventListener("submit", (e) => {
-			handleSubmit(e, errors, myProduct, isEmpty);
+			handleSubmit(e, errors, myProduct, isEmpty, files);
 		});
 
 		return form;
 	};
 	// createForm();
 	return {
-		showModel
+		showModal
 	};
 })();
 

@@ -1,8 +1,15 @@
 import { showErrors, handleValidation } from "../Utils/utils.js";
-import button from "./button.js";
 import { renderImages } from "./renderImages.js";
 
-export default (name, value, config, callback, errors, uploadFiles) => {
+export default (
+	name,
+	value,
+	config,
+	callback,
+	errors,
+	uploadFiles,
+	fileHolder
+) => {
 	const inputEle = document.createElement("input");
 	let fileContainer = null;
 
@@ -12,15 +19,12 @@ export default (name, value, config, callback, errors, uploadFiles) => {
 
 	const handleDelete = (index) => {
 		uploadFiles.splice(index, 1);
-		renderImages(uploadFiles, fileContainer, true, handleDelete);
+		renderImages(uploadFiles, fileHolder, true, handleDelete);
 		handleFileErrors();
 	};
 
 	if (value.length > 0 && typeof value == "object") {
-		fileContainer = document.createElement("div");
-		fileContainer.classList.add("file-container");
-		renderImages(uploadFiles, fileContainer, true, handleDelete);
-		inputEle.parentElement.appendChild(fileContainer);
+		renderImages(uploadFiles, fileHolder, true, handleDelete);
 	}
 
 	inputEle.classList.add("product-info");
@@ -45,21 +49,16 @@ export default (name, value, config, callback, errors, uploadFiles) => {
 		}
 	};
 
-	const handleDeleteWithIndex = (index, element) => {
-		let diff = uploadFiles.length - 1 - index;
-		let actualIndex = uploadFiles.length - 1 - diff;
-		uploadFiles.splice(actualIndex, 1);
-		element.parentElement.removeChild(element);
-		handleFileErrors();
-	};
-
-	inputEle.addEventListener("input", (e) => {
-		let error = handleValidation(e.target, config.validations);
-		if (error) {
-			errors[name] = error;
-			if (config.type === "file") inputEle.value = null;
-		} else {
-			errors[name] = null;
+	inputEle.addEventListener("input", function (e) {
+		let error = null;
+		if (validations) {
+			error = handleValidation(e.target, config?.validations);
+			if (error) {
+				errors[name] = error;
+				if (config?.type === "file") inputEle.value = null;
+			} else {
+				errors[name] = null;
+			}
 		}
 
 		if (config.type === "file" && !error) {
@@ -68,16 +67,9 @@ export default (name, value, config, callback, errors, uploadFiles) => {
 
 			reader.onloadend = () => {
 				const imgSrc = reader.result;
-
-				if (!fileContainer) {
-					fileContainer = document.createElement("div");
-					fileContainer.classList.add("image-container");
-					inputEle.parentElement.appendChild(fileContainer);
-				}
-
 				if (imgSrc) {
 					uploadFiles.push(imgSrc);
-					renderImages(uploadFiles, fileContainer, true, handleDelete);
+					renderImages(uploadFiles, fileHolder, true, handleDelete);
 					inputEle.value = "";
 				}
 			};
@@ -85,7 +77,9 @@ export default (name, value, config, callback, errors, uploadFiles) => {
 				reader.readAsDataURL(file);
 			}
 		}
-		showErrors(name, error);
+		if (validations) {
+			showErrors(name, error);
+		}
 		callback(e);
 	});
 	return inputEle;
