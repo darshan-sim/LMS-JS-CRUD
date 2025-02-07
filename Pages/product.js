@@ -65,7 +65,7 @@ const getProducts = (params) => {
 	let productTable = null;
 	let noData = document.createElement("img");
 	productContainer.append(noData);
-	noData.src = "/Images/no-data-to-display.svg";
+	noData.src = "./Images/no-data-to-display.svg";
 	noData.classList.add("hidden", "no-data");
 	if (!products || products.length <= 0) {
 		noData.classList.remove("hidden");

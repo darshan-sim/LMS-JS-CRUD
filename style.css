@@ -369,14 +369,9 @@ form .product-info{
   box-shadow: var(--shadow-hover);
 }
 
-.popup .field {
-  /* border-bottom: 1px solid var(--neutral); */
-}
-
 .popup .field-title {
   font-weight: bold;
   background-color: var(--light-text);
-  /* text-align: center; */
   padding: .3rem .7rem;
   border: var(--rounded);
 }
