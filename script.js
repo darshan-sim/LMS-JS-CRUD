@@ -1,28 +1,4 @@
-import router from "./router.js";
-
-const getParams = (search) => {
-	const params = {};
-	const URLParams = new URLSearchParams(search.split("?")[1]);
-	for (const [key, value] of URLParams.entries()) {
-		params[key] = value;
-	}
-	return params;
-};
-
-const navigate = (path, element) => {
-	let content = null;
-	if (path === "index") {
-		const search = window.location.search;
-		const params = getParams(search);
-		content = router[path](params);
-		element.replaceChildren(content);
-		return;
-	}
-	const pageName = path.split("?")[0].slice(1);
-	const params = getParams(path);
-	content = router[pageName](params);
-	element.replaceChildren(content);
-};
+import { navigate } from "./Utils/utils.js";
 
 window.addEventListener("DOMContentLoaded", () => {
 	const hash = window.location.hash;
@@ -50,3 +26,9 @@ window.addEventListener("pushstate", () => {
 		navigate("index", root);
 	}
 });
+
+// VM37:1 Uncaught SecurityError: Failed to execute 'replaceState' on 'History': A history state object with URL 'https://codesandbox.io/' cannot be created in a document with origin 'https://2r8z9j.csb.app' and URL 'https://2r8z9j.csb.app/'.
+//     at History.pushState (eval at Ld (preview-protocol.js:73:63), <anonymous>:1:855)
+//     at redirectBack (utils.js:54:10)
+//     at handleSubmit (modal.js:41:5)
+//     at HTMLFormElement.<anonymous> (modal.js:127:4)

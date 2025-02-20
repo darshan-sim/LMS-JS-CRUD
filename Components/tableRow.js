@@ -14,7 +14,6 @@ export default (productData) => {
 				popup.parentElement.removeChild(popup);
 			}
 			const products = product.deleteProduct(productData.id);
-			console.log({ products });
 
 			const productContainer = document.querySelector(
 				"[data-table-container='product']"
@@ -22,8 +21,9 @@ export default (productData) => {
 			if (!products || products.length <= 0) {
 				redirectBack();
 			} else {
-				const updatedTable = table(products);
-				productContainer.replaceChildren(updatedTable);
+				redirectBack();
+				// const updatedTable = table(products);
+				// productContainer.replaceChildren(updatedTable);
 			}
 		}
 	};

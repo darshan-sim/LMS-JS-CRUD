@@ -357,7 +357,7 @@ form .product-info{
 
 /* popup */
 .popup {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -369,14 +369,9 @@ form .product-info{
   box-shadow: var(--shadow-hover);
 }
 
-.popup .field {
-  /* border-bottom: 1px solid var(--neutral); */
-}
-
 .popup .field-title {
   font-weight: bold;
   background-color: var(--light-text);
-  /* text-align: center; */
   padding: .3rem .7rem;
   border: var(--rounded);
 }
@@ -402,7 +397,7 @@ form .product-info{
 
 .big-carousel img {
   min-width: 10rem;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 

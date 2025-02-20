@@ -12,7 +12,7 @@ export default (headers, classes) => {
 		direction = !direction;
 		url.search = params.toString();
 		history.pushState(null, "", url.toString());
-		window.dispatchEvent(new Event("pushstate"));
+		// window.dispatchEvent(new Event("pushstate"));
 	};
 
 	const thead = document.createElement("thead");
